@@ -12,7 +12,7 @@ namespace cpptrace {
 		struct ProfilingResult {
 			std::string m_timer_name;
 			long long m_start, m_end;
-			uint32_t m_thread_id;
+			size_t m_thread_id;
 		};
 
 	public:
