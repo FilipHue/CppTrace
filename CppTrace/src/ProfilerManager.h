@@ -27,7 +27,12 @@ namespace cpptrace {
 		void WriteProfile(const ProfilingResult& result);
 		void WriteFooter();
 
-		static ProfilerManager* GetInstance();
+		static ProfilerManager& GetInstance()
+		{
+			static ProfilerManager instance;
+
+			return instance;
+		}
 
 	protected:
 		ProfilerManager();
@@ -38,7 +43,5 @@ namespace cpptrace {
 		bool m_active_session = false;
 		int m_timers_count = 0;
 		std::mutex m_lock;
-
-		static ProfilerManager* m_instance;
 	};
 } // cpptrace

@@ -4,8 +4,6 @@
 
 namespace cpptrace {
 
-	ProfilerManager* ProfilerManager::m_instance = nullptr;
-
 	ProfilerManager::~ProfilerManager()
 	{
 		EndSession();
@@ -65,15 +63,6 @@ namespace cpptrace {
 	void ProfilerManager::WriteFooter()
 	{
 		m_output_stream << "]}";
-	}
-
-	ProfilerManager* ProfilerManager::GetInstance()
-	{
-		if (m_instance == nullptr) {
-			m_instance = new ProfilerManager();
-		}
-
-		return m_instance;
 	}
 
 	ProfilerManager::ProfilerManager()

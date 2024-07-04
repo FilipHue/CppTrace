@@ -19,7 +19,7 @@ namespace cpptrace {
 			m_result.m_end = end_point_time.time_since_epoch().count();
 			m_result.m_thread_id = std::hash<std::thread::id>{}(std::this_thread::get_id());
 
-			ProfilerManager::GetInstance()->WriteProfile(m_result);
+			ProfilerManager::GetInstance().WriteProfile(m_result);
 
 			m_stopped = true;
 		}
