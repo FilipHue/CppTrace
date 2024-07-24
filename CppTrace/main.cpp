@@ -13,7 +13,8 @@ using namespace cpptrace;
 #endif // NO_HEADER
 
 int main() {
-    PROFILE_BEGIN_SESSION("Test Session", "results.json");
+
+    PROFILE_BEGIN_SESSION("Test Session", CONSOLE_OUTPUT);
 
     {
         PROFILE_FUNCTION();  // Profiles the main function scope
@@ -22,7 +23,7 @@ int main() {
 
     auto thread_func = []() {
         PROFILE_FUNCTION();  // Profiles this thread function scope
-        std::this_thread::sleep_for(std::chrono::milliseconds(200)); // Simulate work
+        std::this_thread::sleep_for(std::chrono::milliseconds(rand())); // Simulate work
         };
 
     {
@@ -42,5 +43,16 @@ int main() {
     }
 
     PROFILE_END_SESSION();
+
+    PROFILE_BEGIN_SESSION("Test Session 2", CONSOLE_OUTPUT);
+	
+    {
+        PROFILE_SCOPE("Simulating work");
+        for (int i = 0; i < 100000; i++) {
+        }
+    }
+
+    PROFILE_END_SESSION();
+
     return 0;
 }

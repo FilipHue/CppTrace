@@ -19,7 +19,11 @@ namespace cpptrace_noheader {
 			m_result.m_end = end_point_time.time_since_epoch().count();
 			m_result.m_thread_id = std::hash<std::thread::id>{}(std::this_thread::get_id());
 
-			ProfilerManager::GetInstance().WriteProfile(m_result);
+			if (ProfilerManager::GetInstance().IsConsoleOutput()) {
+				ProfilerManager::GetInstance().WriteProfileConsole(m_result);
+			} else {
+				ProfilerManager::GetInstance().WriteProfile(m_result);
+			}
 
 			m_stopped = true;
 		}

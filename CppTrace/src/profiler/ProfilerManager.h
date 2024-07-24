@@ -6,6 +6,8 @@
 
 namespace cpptrace_noheader {
 
+	constexpr auto CONSOLE_OUTPUT = "console";
+
 	class ProfilerManager
 	{
 	public:
@@ -24,8 +26,13 @@ namespace cpptrace_noheader {
 		void EndSession();
 
 		void WriteHeader();
+		void WriteHeaderConsole();
 		void WriteProfile(const ProfilingResult& result);
+		void WriteProfileConsole(const ProfilingResult& result);
+		void WriteFooterConsole();
 		void WriteFooter();
+
+		bool IsConsoleOutput() const;
 
 		static ProfilerManager& GetInstance()
 		{
@@ -41,6 +48,7 @@ namespace cpptrace_noheader {
 		std::ofstream m_output_stream;
 		std::string m_session_name = "None";
 		bool m_active_session = false;
+		bool m_console_output = false;
 		int m_timers_count = 0;
 		std::mutex m_lock;
 	};

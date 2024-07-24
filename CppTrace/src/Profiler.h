@@ -1,11 +1,14 @@
 #pragma once
 
-#include <algorithm>
+#include <iostream>
 #include <string>
 #include <fstream>
 #include <mutex>
+#include <algorithm>
 
 namespace cpptrace {
+
+constexpr auto CONSOLE_OUTPUT = "console";
 
 	class ProfilerManager
 	{
@@ -18,22 +21,28 @@ namespace cpptrace {
 
 	public:
 		ProfilerManager(ProfilerManager& other) = delete;
-		~ProfilerManager()
-		{
+		~ProfilerManager() {
 			EndSession();
 		};
 		void operator=(const ProfilerManager& other) = delete;
 
-		void BeginSession(const std::string& session_name, const std::string& output_filepath = "result.json")
+		void BeginSession(const std::string& session_name, const std::string& output = "result.json")
 		{
 			if (m_active_session) {
 				EndSession();
 			}
 
-			m_output_stream.open(output_filepath);
+			m_console_output = output == CONSOLE_OUTPUT;
 			m_session_name = session_name;
 			m_active_session = true;
-			WriteHeader();
+
+			if (m_console_output) {
+				WriteHeaderConsole();
+			}
+			else {
+				m_output_stream.open(output);
+				WriteHeader();
+			}
 		}
 		void EndSession()
 		{
@@ -41,16 +50,29 @@ namespace cpptrace {
 				return;
 			}
 
-			WriteFooter();
-			m_output_stream.close();
+			if (m_console_output) {
+				WriteFooterConsole();
+			}
+			else {
+				WriteFooter();
+				m_output_stream.close();
+			}
+
 			m_active_session = false;
 			m_timers_count = 0;
 		}
 
 		void WriteHeader()
 		{
+			//std::lock_guard<std::mutex> lock(m_lock);
 			m_output_stream << "{\"otherData\": {},\"traceEvents\": [";
 		}
+		void WriteHeaderConsole()
+		{
+			//std::lock_guard<std::mutex> lock(m_lock);
+			std::cout << "Starting session: " << m_session_name << "\n";
+		}
+
 		void WriteProfile(const ProfilingResult& result)
 		{
 			std::lock_guard<std::mutex> lock(m_lock);
@@ -72,9 +94,26 @@ namespace cpptrace {
 			m_output_stream << "\"ts\":" << result.m_start;
 			m_output_stream << "}";
 		}
+		void WriteProfileCosole(const ProfilingResult& result)
+		{
+			std::lock_guard<std::mutex> lock(m_lock);
+			std::cout << "Timer: " << result.m_timer_name << " - Duration: " << (result.m_end - result.m_start) << "ms\n";
+		}
+
 		void WriteFooter()
 		{
+			//std::lock_guard<std::mutex> lock(m_lock);
 			m_output_stream << "]}";
+		}
+		void WriteFooterConsole()
+		{
+			//std::lock_guard<std::mutex> lock(m_lock);
+			std::cout << "Ending session: " << m_session_name << "\n";
+		}
+
+		bool IsConsoleOutput() const
+		{
+			return m_console_output;
 		}
 
 		static ProfilerManager& GetInstance()
@@ -91,6 +130,7 @@ namespace cpptrace {
 		std::ofstream m_output_stream;
 		std::string m_session_name = "None";
 		bool m_active_session = false;
+		bool m_console_output = false;
 		int m_timers_count = 0;
 		std::mutex m_lock;
 	};
@@ -109,7 +149,10 @@ namespace cpptrace {
 				m_result.m_end = end_point_time.time_since_epoch().count();
 				m_result.m_thread_id = std::hash<std::thread::id>{}(std::this_thread::get_id());
 
-				ProfilerManager::GetInstance().WriteProfile(m_result);
+				if (ProfilerManager::GetInstance().IsConsoleOutput())
+					ProfilerManager::GetInstance().WriteProfileCosole(m_result);
+				else
+					ProfilerManager::GetInstance().WriteProfile(m_result);
 
 				m_stopped = true;
 			}
@@ -122,7 +165,7 @@ namespace cpptrace {
 		bool m_stopped = false;
 	};
 
-#define PROFILE_BEGIN_SESSION(session_name, output_filepath) ProfilerManager::GetInstance().BeginSession(session_name, output_filepath)
+#define PROFILE_BEGIN_SESSION(session_name, output) ProfilerManager::GetInstance().BeginSession(session_name, output)
 #define PROFILE_END_SESSION() ProfilerManager::GetInstance().EndSession()
 
 #define PROFILE_SCOPE(timer_name) ProfilingTimer timer##__LINE__(timer_name)
