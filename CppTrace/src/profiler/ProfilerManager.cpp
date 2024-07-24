@@ -2,7 +2,7 @@
 
 #include "ProfilerManager.h"
 
-namespace cpptrace {
+namespace cpptrace_noheader {
 
 	ProfilerManager::~ProfilerManager()
 	{

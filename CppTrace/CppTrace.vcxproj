@@ -81,13 +81,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="src\ProfilingTimer.cpp" />
-    <ClCompile Include="src\ProfilerManager.cpp" />
+    <ClCompile Include="src\profiler\ProfilingTimer.cpp" />
+    <ClCompile Include="src\profiler\ProfilerManager.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\Profiler.h" />
-    <ClInclude Include="src\ProfilingTimer.h" />
-    <ClInclude Include="src\ProfilerManager.h" />
+    <ClInclude Include="src\profiler.h" />
+    <ClInclude Include="src\profiler\Profiler.h" />
+    <ClInclude Include="src\profiler\ProfilingTimer.h" />
+    <ClInclude Include="src\profiler\ProfilerManager.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

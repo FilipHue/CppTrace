@@ -18,21 +18,24 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\ProfilerManager.cpp">
+    <ClCompile Include="src\profiler\ProfilerManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\ProfilingTimer.cpp">
+    <ClCompile Include="src\profiler\ProfilingTimer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\ProfilerManager.h">
+    <ClInclude Include="src\profiler\ProfilerManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\ProfilingTimer.h">
+    <ClInclude Include="src\profiler\ProfilingTimer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Profiler.h">
+    <ClInclude Include="src\profiler\Profiler.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\profiler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

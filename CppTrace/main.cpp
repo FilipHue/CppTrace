@@ -2,9 +2,15 @@
 #include <thread>
 #include <vector>
 
-#include "src/Profiler.h"
+#define NO_HEADER 1
 
+#if NO_HEADER
+#include "src/profiler/Profiler.h"
+using namespace cpptrace_noheader;
+#else
+#include "src/profiler.h"
 using namespace cpptrace;
+#endif // NO_HEADER
 
 int main() {
     PROFILE_BEGIN_SESSION("Test Session", "results.json");

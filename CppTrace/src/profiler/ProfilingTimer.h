@@ -4,7 +4,7 @@
 
 #include "ProfilerManager.h"
 
-namespace cpptrace {
+namespace cpptrace_noheader {
 
 	class ProfilingTimer
 	{
@@ -18,4 +18,4 @@ namespace cpptrace {
 
 		bool m_stopped = false;
 	};
-} // cpptrace
+} // cpptrace_noheader

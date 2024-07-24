@@ -2,7 +2,7 @@
 
 #include "ProfilingTimer.h"
 
-namespace cpptrace {
+namespace cpptrace_noheader {
 
 	ProfilingTimer::ProfilingTimer(const std::string& timer_name)
 		: m_result({ timer_name, 0, 0, 0 }), m_start_point_time(std::chrono::high_resolution_clock::now())

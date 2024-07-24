@@ -4,7 +4,7 @@
 #include <fstream>
 #include <mutex>
 
-namespace cpptrace {
+namespace cpptrace_noheader {
 
 	class ProfilerManager
 	{
@@ -44,4 +44,4 @@ namespace cpptrace {
 		int m_timers_count = 0;
 		std::mutex m_lock;
 	};
-} // cpptrace
+} // cpptrace_noheader
